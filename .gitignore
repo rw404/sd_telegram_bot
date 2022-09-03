@@ -1,4 +1,5 @@
 tmp
+api
 __pycache__
 !bot.py
 !diff.py
