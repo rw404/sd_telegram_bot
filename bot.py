@@ -11,20 +11,26 @@ def handle(msg):
     print(msg)
     chat_id = msg['chat']['id']
     commands = msg['text']
-    
-    command = commands.split()[0]
 
-    fromid = commands.split()[1]
-    prompt = ' '.join(commands.split()[2:])
+    if commands.split()[0][:8] == '/imagine':
+        command = commands.split()[0]
 
-    print(f'Got command: {command}, prompt: {prompt}')
+        fromname = msg['from']['username']
+        fromid = msg['from']['id']
+        prompt = ' '.join(commands.split()[1:])
+        
+        seed = None
+        if len(command) > 8:
+            seed = int(command[8:])
 
+        print(f'Got command: {command}, prompt: {prompt}, seed: {seed}')
 
-    if command == '/imagine':
-        image = diff.inference(pipe, device, prompt)
-        image.save('tmp/test.png')
+        image, seed = diff.inference(pipe, device, seed=seed, prompt=prompt)
+        image.save(f'tmp/test_{fromid}.png')
 
-        bot.sendPhoto(chat_id, photo=open("tmp/test.png", 'rb'), caption=fromid)
+        bot.sendPhoto(chat_id, photo=open(f"tmp/test_{fromid}.png", 'rb'),
+                      caption=f'@{fromname}\n\n*PROMPT*: `{prompt}`\n\n*SEED*={seed}',
+                      parse_mode="Markdown")
 
 if __name__ == '__main__':
     print('lol')

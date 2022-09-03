@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 from torch import autocast
 from diffusers import StableDiffusionPipeline, LMSDiscreteScheduler
 
@@ -20,18 +21,22 @@ def load_model():
     
     return pipe, device
 
-def inference(pipe, device, prompt: str = "A digital Illustration of the Babel tower, 4k, detailed, trending in artstation, fantasy vivid colors"):
+def inference(pipe, device, seed: int = None, prompt: str = "A digital Illustration of the Babel tower, 4k, detailed, trending in artstation, fantasy vivid colors"):
     
+    if seed is None:
+        seed = int(np.random.randint(low=-2**32, high=2**32-1, size=1)[0])
+    
+    generator = torch.Generator('cuda').manual_seed(seed)
     with torch.autocast(device):
-        image = pipe(prompt, guidance_scale=7.5)['sample'][0]
-    
-    return image
+        image = pipe(prompt, guidance_scale=7.5, generator=generator)['sample'][0]
+    return image, seed
 
 if __name__ == '__main__':
     pipe, device = load_model()
     # CUSTOM PROMPT -- YOU CAN ENTER WHATEVER YOU WANT IN THIS VARIABLE(str type)
     prompt = "A digital Illustration of the Babel tower, 4k, detailed, trending in artstation, fantasy vivid colors"
-    image = inference(pipe, device, prompt)
+    image, seed = inference(pipe, device, prompt)
 
+    print(seed)
     # SAVE RESULT -- check the name of file
     image.save("test.png")
