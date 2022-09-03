@@ -1,2 +1,4 @@
+tmp
+__pycache__
 !bot.py
 !diff.py
