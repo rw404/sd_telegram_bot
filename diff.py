@@ -35,7 +35,7 @@ if __name__ == '__main__':
     pipe, device = load_model()
     # CUSTOM PROMPT -- YOU CAN ENTER WHATEVER YOU WANT IN THIS VARIABLE(str type)
     prompt = "A digital Illustration of the Babel tower, 4k, detailed, trending in artstation, fantasy vivid colors"
-    image, seed = inference(pipe, device, prompt)
+    image, seed = inference(pipe, device, prompt=prompt)
 
     print(seed)
     # SAVE RESULT -- check the name of file
