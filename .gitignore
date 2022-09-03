@@ -1,5 +1,6 @@
 tmp
 api
+test.png
 __pycache__
 !bot.py
 !diff.py
