@@ -1,0 +1,13 @@
+To generate image using custom propmt enter:
+ - `/imagine PROMPT`.
+
+To generate image using custom prompt and a *special seed* enter:
+ - `/imagineSEED PROMPT`
+
+To get the your last result as file enter:
+ - `/file`
+
+*EXAMPLES*:
+> `/imagine A beautiful castle beside a waterfall in the woods, by Josef Thoma, matte painting, trending on artstation HQ`
+> `/imagine-593468006 A beautiful castle beside a waterfall in the woods, by Josef Thoma, matte painting, trending on artstation HQ`
+> `/file`
