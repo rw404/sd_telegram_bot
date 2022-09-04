@@ -11,7 +11,7 @@
 4. To infer SD model, you have to agree the [huggingface rules](https://huggingface.co/CompVis/stable-diffusion-v1-4), get your id accept token and enter it after running[it can return errors and suggestions to fix it]:
     `hugginface-cli login`
 5. Try model with following command:
-    `python[python3] diff.py` -- It returns smth like *CUDA inference started* or *CPU inference started*, then downloads the model, then runs 50 iterations to generate the image.
+    `python[python3] diff.py` -- It returns smth like **CUDA inference started** or **CPU inference started**, then downloads the model, then runs 50 iterations to generate the image.
 
 # Running Bot
 
