@@ -8,8 +8,8 @@ import io
 pipe, device = diff.load_model()
 
 def handle(msg):
-    print(msg)
     chat_id = msg['chat']['id']
+    msg_id = msg['message_id']
     commands = msg['text']
 
     if commands.split()[0][:8] == '/imagine':
@@ -18,7 +18,7 @@ def handle(msg):
         fromname = msg['from']['username']
         fromid = msg['from']['id']
         prompt = ' '.join(commands.split()[1:])
-        
+
         seed = None
         if len(command) > 8:
             seed = int(command[8:])
@@ -28,12 +28,30 @@ def handle(msg):
         image, seed = diff.inference(pipe, device, seed=seed, prompt=prompt)
         image.save(f'tmp/test_{fromid}.png')
 
-        bot.sendPhoto(chat_id, photo=open(f"tmp/test_{fromid}.png", 'rb'),
+        bot.sendPhoto(chat_id, photo=open(f"tmp/test_{fromid}.png", 'rb'), reply_to_message_id=msg_id,
                       caption=f'@{fromname}\n\n*PROMPT*: `{prompt}`\n\n*SEED*={seed}',
                       parse_mode="Markdown")
+    elif commands.split()[0][:5] == '/file':
+        command = commands.split()[0]
+
+        fromid = msg['from']['id']
+        fromname = msg['from']['username']
+        print(f'Got command: {command}')
+
+        bot.sendDocument(chat_id, document=open(f"tmp/test_{fromid}.png", 'rb'), reply_to_message_id=msg_id, caption=f"@{fromname}")
+
+    elif commands.split()[0][:5] == '/help':
+        command = commands.split()[0]
+
+        fromname = msg['from']['username']
+        print(f'Got command: {command}')
+
+        with open('help', 'r') as file:
+            text = file.read()
+
+        bot.sendMessage(chat_id, text, parse_mode='Markdown')
 
 if __name__ == '__main__':
-    print('lol')
     api = sys.argv[1]
     bot = telepot.Bot(api)
     print('Ready to take photos')
