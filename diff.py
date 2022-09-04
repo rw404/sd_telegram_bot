@@ -26,7 +26,7 @@ def inference(pipe, device, seed: int = None, prompt: str = "A digital Illustrat
     if seed is None:
         seed = int(np.random.randint(low=-2**32, high=2**32-1, size=1)[0])
     
-    generator = torch.Generator('cuda').manual_seed(seed)
+    generator = torch.Generator(device).manual_seed(seed)
     with torch.autocast(device):
         image = pipe(prompt, guidance_scale=7.5, generator=generator)['sample'][0]
     return image, seed
